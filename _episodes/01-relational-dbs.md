@@ -18,7 +18,7 @@ keypoints:
 
 Lets start with a simple example, say, keeping a record of appointments for a medical clinic.  
 You want to record when and where the appointments were, details about patients, their name, 
-address, phone number, ect., and details about the doctors being seen.
+address, phone number, etc., and details about the doctors being seen.
 
 You could start keeping a table like this: 
 
