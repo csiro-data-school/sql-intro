@@ -82,7 +82,7 @@ efficiently store and query large volumes of data. Such database systems are qui
 scenes of many websites you may interact with, e.g. Facebook, especially if the website provides
 any searchable or sortable data.
   
-Some of the most popular database systems include MySQL, Oracle and PostgreSQL. These systems
+Some of the most popular database systems include MySQL, SQL Server, Oracle and PostgreSQL. These systems
 (and others) have settled on a common (mostly consistent) language and syntax for interacting 
 with them, for defining tables and relationships, for inserting/altering data and for making 
 queries. This language is called SQL - Structured Query Language.
