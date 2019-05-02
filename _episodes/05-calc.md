@@ -131,7 +131,9 @@ SELECT personal || ' ' || family FROM Person;
 > The difference is that `UNION ALL` will return all rows from all queries, and will not eliminate duplicate rows.  For example:
 >
 > ~~~
-> SELECT * FROM Person WHERE id IN ('dyer', 'roe') UNION ALL SELECT * FROM Person WHERE id IN ('dyer', 'roe');
+> SELECT * FROM Person WHERE id IN ('dyer', 'roe') 
+> UNION ALL 
+> SELECT * FROM Person WHERE id IN ('dyer', 'roe');
 > ~~~
 > {: .sql}
 >
@@ -172,7 +174,13 @@ SELECT personal || ' ' || family FROM Person;
 > > ## Solution
 > >
 > > ~~~
-> > SELECT taken, reading FROM Survey WHERE person != 'roe' AND quant = 'sal' UNION SELECT taken, reading / 100 FROM Survey WHERE person = 'roe' AND quant = 'sal' ORDER BY taken ASC;
+> > SELECT taken, reading 
+> >  FROM  Survey 
+> >  WHERE person != 'roe' AND quant = 'sal' 
+> > UNION 
+> > SELECT taken, reading / 100 
+> >  FROM  Survey 
+> >  WHERE person = 'roe' AND quant = 'sal' ORDER BY taken ASC;
 > > ~~~
 > > {: .sql}
 > {: .solution}
@@ -194,15 +202,21 @@ SELECT personal || ' ' || family FROM Person;
 > |DR-3 |
 > |MSK-4|
 >
-> Some major site identifiers (i.e. the letter codes) are two letters long and some are three.
+> In the Site table, some of the major site identifiers (i.e. the letter codes) are two letters long and some are three.
+> If we wanted to identify only the unique sites (ie, the unique letter codes), how could we achieve this?
 > The "in string" function `instr(X, Y)`
-> returns the 1-based index of the first occurrence of string Y in string X,
-> or 0 if Y does not exist in X.
+> returns the position of the first occurrence of string Y in string X, using a 1-based index,
+> or 0 if Y does not exist in X:
+> ~~~
+> SELECT site, instr(site, '-') FROM Visited;
+> ~~~
+> {: .sql}
+>
 > The substring function `substr(X, I, [L])`
 > returns the substring of X starting at index I, with an optional length L.
+>
 > Use these two functions to produce a list of unique major site identifiers.
-> (For this data,
-> the list should contain only "DR" and "MSK").
+> (For this data, the list should contain only "DR" and "MSK").
 >
 > > ## Solution
 > > ```
