@@ -105,10 +105,11 @@ SELECT * FROM Site JOIN Visited ON Site.name = Visited.site;
 |DR-3 |-47.15|-126.72|752  |DR-3 |-null-    |
 |MSK-4|-48.87|-123.4 |837  |MSK-4|1932-01-14|
 
-`ON` is very similar to `WHERE`,
-and for all the queries in this lesson you can use them interchangeably.
-There are differences in how they affect [outer joins][outer],
+`ON` is very similar to `WHERE`, and for all the queries in this lesson you can use them interchangeably.
+NOTE:  The use of `WHERE` instead of `ON` is not standard syntax for some other database managers, 
+and with SQLite, there are differences in how they affect [outer joins][outer],
 but that's beyond the scope of this lesson.
+
 Once we add this to our query,
 the database manager throws away records
 that combined information about two different sites,
@@ -155,10 +156,10 @@ that don't make sense:
 
 ~~~
 SELECT Site.lat, Site.long, Visited.dated, Survey.quant, Survey.reading
-FROM   Site JOIN Visited JOIN Survey
-ON     Site.name = Visited.site
-AND    Visited.id = Survey.taken
-AND    Visited.dated IS NOT NULL;
+FROM   Site 
+ JOIN  Visited ON Site.name = Visited.site
+ JOIN  Survey  ON Visited.id = Survey.taken
+WHERE  Visited.dated IS NOT NULL;
 ~~~
 {: .sql}
 
@@ -237,9 +238,9 @@ SELECT rowid, * FROM Person;
  > > 
  > > ~~~
  > > SELECT Survey.reading 
- > > FROM Site JOIN Visited JOIN Survey 
- > > ON Site.name = Visited.site
- > > AND Visited.id = Survey.taken
+ > > FROM Site 
+ > >   JOIN Visited  ON Site.name = Visited.site
+ > >   JOIN Survey   ON Visited.id = Survey.taken
  > > WHERE Site.name = 'DR-1' 
  > > AND Survey.quant = 'rad';
  > > ~~~
@@ -260,11 +261,11 @@ SELECT rowid, * FROM Person;
  > > 
  > > ~~~
  > > SELECT DISTINCT Site.name
- > > FROM Site JOIN Visited JOIN Survey JOIN Person
- > > ON Site.name = Visited.site
- > > AND Visited.id = Survey.taken
- > > AND Survey.person = Person.id
- > > WHERE Person.personal = 'Frank';
+ > > FROM   Site 
+ > >  JOIN  Visited ON Site.name = Visited.site
+ > >  JOIN  Survey ON Visited.id = Survey.taken
+ > >  JOIN  Person ON Survey.person = Person.id
+ > > WHERE  Person.personal = 'Frank';
  > > ~~~
  > > {: .sql}
  > >
@@ -279,8 +280,10 @@ SELECT rowid, * FROM Person;
 > Describe in your own words what the following query produces:
 >
 > ~~~
-> SELECT Site.name FROM Site JOIN Visited
-> ON Site.lat <- 49.0 AND Site.name = Visited.site AND Visited.dated >= '1932-01-01';
+> SELECT Site.name 
+> FROM   Site 
+>  JOIN  Visited  ON Site.name = Visited.site
+> WHERE  Site.lat <- 49.0 AND Visited.dated >= '1932-01-01';
 > ~~~
 > {: .sql}
 {: .challenge}
@@ -295,12 +298,12 @@ SELECT rowid, * FROM Person;
  > > 
  > > ~~~
  > > SELECT Site.name, Site.lat, Site.long, Person.personal, Person.family, Survey.quant, Survey.reading, Visited.dated
- > > FROM Site JOIN Visited JOIN Survey JOIN Person
- > > ON Site.name = Visited.site
- > > AND Visited.id = Survey.taken
- > > AND Survey.person = Person.id
- > > WHERE Survey.person IS NOT NULL
- > > AND Visited.dated IS NOT NULL
+ > > FROM   Site 
+ > >  JOIN  Visited ON Site.name = Visited.site
+ > >  JOIN  Survey  ON Visited.id = Survey.taken
+ > >  JOIN  Person  ON Survey.person = Person.id
+ > > WHERE  Survey.person IS NOT NULL
+ > > AND    Visited.dated IS NOT NULL
  > > ORDER BY Visited.dated;
  > > ~~~
  > > {: .sql}
@@ -322,7 +325,22 @@ SELECT rowid, * FROM Person;
  > >MSK-4   |    -48.87   |   -123.4    |  Anderson   | Lake     |   sal     |    0.21   |   1932-01-14
  > >MSK-4   |    -48.87   |   -123.4    |  Valentina  | Roerich  |   sal     |    22.5   |   1932-01-14
  > >DR-1    |    -49.85   |   -128.57   |  Valentina  | Roerich  |   rad     |    11.25  |   1932-03-22
- > {: .solution}
+ > 
+ > For completeness, we should show you that it is possible to get the same results using slightly different syntax, 
+ > and while this syntax will work for SQLite, it may not work with other database managers, 
+ > and it is not as easy to read and understand what is happening: 
+ > > ~~~
+ > > SELECT Site.name, Site.lat, Site.long, Person.personal, Person.family, Survey.quant, Survey.reading, Visited.dated
+ > > FROM Site JOIN Visited JOIN Survey JOIN Person
+ > > ON Site.name = Visited.site
+ > > AND Visited.id = Survey.taken
+ > > AND Survey.person = Person.id
+ > > WHERE Survey.person IS NOT NULL
+ > > AND Visited.dated IS NOT NULL
+ > > ORDER BY Visited.dated;
+ > > ~~~
+ > > {: .sql}
+  >{: .solution}
 {: .challenge}
 
 A good visual explanation of joins can be found [here][joinref]
