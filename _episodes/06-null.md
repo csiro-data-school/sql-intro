@@ -7,7 +7,7 @@ questions:
 - "What special handling does missing information require?"
 objectives:
 - "Explain how databases represent missing information."
-- "Explain the three-valued logic databases use when manipulating missing information."
+- "Explain the three-valued logic that databases use when manipulating missing information."
 - "Write queries that handle missing information correctly."
 keypoints:
 - "Databases use a special value called NULL to represent missing information."
@@ -16,7 +16,7 @@ keypoints:
 ---
 Real-world data is never complete --- there are always holes.
 Databases represent these holes using a special value called `null`.
-`null` is not zero, `False`, or the empty string;
+A `null` is not zero, `False`, or the empty string;
 it is a one-of-a-kind value that means "nothing here".
 Dealing with `null` requires a few special tricks
 and some careful thinking.
@@ -75,23 +75,23 @@ SELECT * FROM Visited WHERE dated >= '1930-01-01';
 we get five,
 but record #752 isn't in either set of results.
 The reason is that
-`null<'1930-01-01'`
+`null < '1930-01-01'`
 is neither true nor false:
 null means, "We don't know,"
 and if we don't know the value on the left side of a comparison,
 we don't know whether the comparison is true or false.
 Since databases represent "don't know" as null,
-the value of `null<'1930-01-01'`
+the value of `null < '1930-01-01'`
 is actually `null`.
-`null>='1930-01-01'` is also null
+`null >= '1930-01-01'` is also null
 because we can't answer to that question either.
 And since the only records kept by a `WHERE`
 are those for which the test is true,
 record #752 isn't included in either set of results.
 
 Comparisons aren't the only operations that behave this way with nulls.
-`1+null` is `null`,
-`5*null` is `null`,
+`1 + null` is `null`,
+`5 * null` is `null`,
 `log(null)` is `null`,
 and so on.
 In particular,
