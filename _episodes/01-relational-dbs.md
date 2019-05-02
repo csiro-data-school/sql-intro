@@ -11,7 +11,7 @@ keypoints:
 - "Relational Databases are an efficient way to store and query data..."
 - "making use of relationships between multiple tables of information."
 - "The most common syntax for interacting with such databases is SQL- Structured Query Language."
-- "Implementations include MySQL, Oracle and Postgres."
+- "Implementations include MySQL, SQL Server, Oracle and Postgres."
 ---
 
 ## Relational Databases
