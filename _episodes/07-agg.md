@@ -381,7 +381,7 @@ this query:
 
 > ## Ordering When Concatenating
 >
-> The function `group_concat(field, separator)`
+> The function `GROUP_CONCAT(field, separator)`
 > concatenates all the values in a field
 > using the specified separator character
 > (or ',' if the separator isn't specified).
