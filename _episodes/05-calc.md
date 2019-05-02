@@ -44,11 +44,11 @@ we can convert temperature readings from Fahrenheit to Celsius
 and round to two decimal places:
 
 ~~~
-SELECT taken, round(5 * (reading - 32) / 9, 2) FROM Survey WHERE quant = 'temp';
+SELECT taken, ROUND(5 * (reading - 32) / 9, 2) FROM Survey WHERE quant = 'temp';
 ~~~
 {: .sql}
 
-|taken|round(5*(reading-32)/9, 2)|
+|taken|ROUND(5*(reading-32)/9, 2)|
 |-----|--------------------------|
 |734  |-29.72                    |
 |735  |-32.22                    |
@@ -63,7 +63,7 @@ succinctness and clarity. For example, we could write the previous
 query as:
 
 ~~~
-SELECT taken, round(5 * (reading - 32) / 9, 2) AS Celsius FROM Survey WHERE quant = 'temp';
+SELECT taken, ROUND(5 * (reading - 32) / 9, 2) AS Celsius FROM Survey WHERE quant = 'temp';
 ~~~
 {: .sql}
 
@@ -204,14 +204,15 @@ SELECT personal || ' ' || family FROM Person;
 >
 > In the Site table, some of the major site identifiers (i.e. the letter codes) are two letters long and some are three.
 > If we wanted to identify only the unique sites (ie, the unique letter codes), how could we achieve this?
+> 
 > The "in string" function `instr(X, Y)`
 > returns the position of the first occurrence of string Y in string X, using a 1-based index,
-> or 0 if Y does not exist in X:
+> or 0 if Y does not exist in X.  For example, the following will show the position of the '-' character in site:
 > ~~~
 > SELECT site, instr(site, '-') FROM Visited;
 > ~~~
 > {: .sql}
->
+> 
 > The substring function `substr(X, I, [L])`
 > returns the substring of X starting at index I, with an optional length L.
 >
