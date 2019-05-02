@@ -106,8 +106,7 @@ SELECT DISTINCT taken, quant FROM Survey;
 |837  |sal  |
 |844  |rad  |
 
-Notice in both cases that duplicates are removed
-even if the rows they come from didn't appear to be adjacent in the database table.
+Notice in both cases that duplicates are removed.
 
 
 Our next task is to identify the scientists on the expedition by looking at the `Person` table.
@@ -161,12 +160,9 @@ we can use `ASC` instead of `DESC`.)
 
 
 In order to look at which scientist measured quantities during each visit,
-we can look again at the `Survey` table.
-We can also sort on several fields at once.
-For example,
-this query sorts results first in ascending order by `taken`,
-and then in descending order by `person`
-within each group of equal `taken` values:
+we can look again at the `Survey` table.  We can also sort on several fields at once.
+For example, this query sorts results first in ascending order by `taken`, and then in descending order by `person`
+within each `taken` group:
 
 ~~~
 SELECT taken, person, quant FROM Survey ORDER BY taken ASC, person DESC;

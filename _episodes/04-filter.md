@@ -73,7 +73,7 @@ SELECT * FROM Visited WHERE site = 'DR-1' AND dated < '1930-01-01';
 
 > ## Date Types
 >
-> Most database managers have a special data type for dates.
+> Most databases have a special data type for dates.
 > In fact, many have two:
 > one for dates,
 > such as "May 31, 1971",
@@ -87,11 +87,6 @@ SELECT * FROM Visited WHERE site = 'DR-1' AND dated < '1930-01-01';
 > ([Julian days](https://en.wikipedia.org/wiki/Julian_day), the number of days since November 24, 4714 BCE),
 > or integers
 > ([Unix time](https://en.wikipedia.org/wiki/Unix_time), the number of seconds since midnight, January 1, 1970).
-> If this sounds complicated,
-> it is,
-> but not nearly as complicated as figuring out
-> [historical dates in Sweden](https://en.wikipedia.org/wiki/Swedish_calendar).
-{: .callout}
 
 If we want to find out what measurements were taken by either Lake or Roerich,
 we can combine the tests on their names using `OR`:

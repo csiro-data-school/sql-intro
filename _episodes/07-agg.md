@@ -37,67 +37,67 @@ SELECT dated FROM Visited;
 
 but to combine them,
 we must use an [aggregation function]({{ site.github.url }}/reference.html#aggregation-function)
-such as `min` or `max`.
+such as `MIN` or `MAX`.
 Each of these functions takes a set of records as input,
 and produces a single record as output:
 
 ~~~
-SELECT min(dated) FROM Visited;
+SELECT MIN(dated) FROM Visited;
 ~~~
 {: .sql}
 
-|min(dated)|
+|MIN(dated)|
 |----------|
 |1927-02-08|
 
 ![SQL Aggregation](../fig/sql-aggregation.svg)
 
 ~~~
-SELECT max(dated) FROM Visited;
+SELECT MAX(dated) FROM Visited;
 ~~~
 {: .sql}
 
-|max(dated)|
+|MAX(dated)|
 |----------|
 |1932-03-22|
 
-`min` and `max` are just two of
+`MIN` and `MAX` are just two of
 the aggregation functions built into SQL.
-Three others are `avg`,
-`count`,
-and `sum`:
+Three others are `AVG`,
+`COUNT`,
+and `SUM`:
 
 ~~~
-SELECT avg(reading) FROM Survey WHERE quant = 'sal';
+SELECT AVG(reading) FROM Survey WHERE quant = 'sal';
 ~~~
 {: .sql}
 
-|avg(reading)    |
+|AVG(reading)    |
 |----------------|
 |7.20333333333333|
 
 ~~~
-SELECT count(reading) FROM Survey WHERE quant = 'sal';
+SELECT COUNT(reading) FROM Survey WHERE quant = 'sal';
 ~~~
 {: .sql}
 
-|count(reading)|
+|COUNT(reading)|
 |--------------|
 |9             |
 
 ~~~
-SELECT sum(reading) FROM Survey WHERE quant = 'sal';
+SELECT SUM(reading) FROM Survey WHERE quant = 'sal';
 ~~~
 {: .sql}
 
-|sum(reading)|
+|SUM(reading)|
 |------------|
 |64.83       |
 
-We used `count(reading)` here,
+We used `COUNT(reading)` here,
 but we could just as easily have counted `quant`
 or any other field in the table,
-or even used `count(*)`,
+or even used `COUNT(*)`,
 since the function doesn't care about the values themselves,
 just how many values there are.
 
@@ -107,11 +107,11 @@ for example,
 find the range of sensible salinity measurements:
 
 ~~~
-SELECT min(reading), max(reading) FROM Survey WHERE quant = 'sal' AND reading <= 1.0;
+SELECT MIN(reading), MAX(reading) FROM Survey WHERE quant = 'sal' AND reading <= 1.0;
 ~~~
 {: .sql}
 
-|min(reading)|max(reading)|
+|MIN(reading)|MAX(reading)|
 |------------|------------|
 |0.05        |0.21        |
 
@@ -119,11 +119,11 @@ We can also combine aggregated results with raw results,
 although the output might surprise you:
 
 ~~~
-SELECT person, count(*) FROM Survey WHERE quant = 'sal' AND reading <= 1.0;
+SELECT person, COUNT(*) FROM Survey WHERE quant = 'sal' AND reading <= 1.0;
 ~~~
 {: .sql}
 
-|person|count(\*)|
+|person|COUNT(\*)|
 |------|--------|
 |lake  |7       |
 
@@ -141,11 +141,11 @@ aggregation's result is "don't know"
 rather than zero or some other arbitrary value:
 
 ~~~
-SELECT person, max(reading), sum(reading) FROM Survey WHERE quant = 'missing';
+SELECT person, MAX(reading), SUM(reading) FROM Survey WHERE quant = 'missing';
 ~~~
 {: .sql}
 
-|person|max(reading)|sum(reading)|
+|person|MAX(reading)|SUM(reading)|
 |------|------------|------------|
 |-null-|-null-      |-null-      |
 
@@ -155,7 +155,7 @@ If we add two values,
 and one of them is null,
 the result is null.
 By extension,
-if we use `sum` to add all the values in a set,
+if we use `SUM` to add all the values in a set,
 and any of those values are null,
 the result should also be null.
 It's much more useful,
@@ -165,22 +165,22 @@ and only combine those that are non-null.
 This behavior lets us write our queries as:
 
 ~~~
-SELECT min(dated) FROM Visited;
+SELECT MIN(dated) FROM Visited;
 ~~~
 {: .sql}
 
-|min(dated)|
+|MIN(dated)|
 |----------|
 |1927-02-08|
 
 instead of always having to filter explicitly:
 
 ~~~
-SELECT min(dated) FROM Visited WHERE dated IS NOT NULL;
+SELECT MIN(dated) FROM Visited WHERE dated IS NOT NULL;
 ~~~
 {: .sql}
 
-|min(dated)|
+|MIN(dated)|
 |----------|
 |1927-02-08|
 
@@ -191,13 +191,13 @@ and that some scientists' radiation readings are higher than others.
 We know that this doesn't work:
 
 ~~~
-SELECT person, count(reading), round(avg(reading), 2)
+SELECT person, COUNT(reading), ROUND(AVG(reading), 2)
 FROM  Survey
 WHERE quant = 'rad';
 ~~~
 {: .sql}
 
-|person|count(reading)|round(avg(reading), 2)|
+|person|COUNT(reading)|ROUND(AVG(reading), 2)|
 |------|--------------|----------------------|
 |roe   |8             |6.56                  |
 
@@ -207,14 +207,14 @@ Since there are only five scientists,
 we could write five queries of the form:
 
 ~~~
-SELECT person, count(reading), round(avg(reading), 2)
+SELECT person, COUNT(reading), ROUND(AVG(reading), 2)
 FROM  Survey
 WHERE quant = 'rad'
 AND   person = 'dyer';
 ~~~
 {: .sql}
 
-person|count(reading)|round(avg(reading), 2)|
+person|COUNT(reading)|ROUND(AVG(reading), 2)|
 ------|--------------|----------------------|
 dyer  |2             |8.81                  |
 
@@ -227,14 +227,14 @@ tell the database manager to aggregate the hours for each scientist separately
 using a `GROUP BY` clause:
 
 ~~~
-SELECT   person, count(reading), round(avg(reading), 2)
+SELECT   person, COUNT(reading), ROUND(AVG(reading), 2)
 FROM     Survey
 WHERE    quant = 'rad'
 GROUP BY person;
 ~~~
 {: .sql}
 
-person|count(reading)|round(avg(reading), 2)|
+person|COUNT(reading)|ROUND(AVG(reading), 2)|
 ------|--------------|----------------------|
 dyer  |2             |8.81                  |
 lake  |2             |1.82                  |
@@ -245,7 +245,7 @@ roe   |1             |11.25                 |
 groups all the records with the same value for the specified field together
 so that aggregation can process each batch separately.
 Since all the records in each batch have the same value for `person`,
-it no longer matters that the database manager
+it no longer matters that the database
 is picking an arbitrary one to display
 alongside the aggregated `reading` values.
 
@@ -256,13 +256,13 @@ for example,
 we just add another field to the `GROUP BY` clause:
 
 ~~~
-SELECT   person, quant, count(reading), round(avg(reading), 2)
+SELECT   person, quant, COUNT(reading), ROUND(AVG(reading), 2)
 FROM     Survey
 GROUP BY person, quant;
 ~~~
 {: .sql}
 
-|person|quant|count(reading)|round(avg(reading), 2)|
+|person|quant|COUNT(reading)|ROUND(AVG(reading), 2)|
 |------|-----|--------------|----------------------|
 |-null-|sal  |1             |0.06                  |
 |-null-|temp |1             |-26.0                 |
@@ -283,7 +283,7 @@ Let's go one step further and remove all the entries
 where we don't know who took the measurement:
 
 ~~~
-SELECT   person, quant, count(reading), round(avg(reading), 2)
+SELECT   person, quant, COUNT(reading), ROUND(AVG(reading), 2)
 FROM     Survey
 WHERE    person IS NOT NULL
 GROUP BY person, quant
@@ -291,7 +291,7 @@ ORDER BY person, quant;
 ~~~
 {: .sql}
 
-|person|quant|count(reading)|round(avg(reading), 2)|
+|person|quant|COUNT(reading)|ROUND(AVG(reading), 2)|
 |------|-----|--------------|----------------------|
 |dyer  |rad  |2             |8.81                  |
 |dyer  |sal  |2             |0.11                  |
@@ -331,11 +331,11 @@ this query:
 > > ## Solution
 > >
 > > ~~~
-> > SELECT count(reading), avg(reading) FROM Survey WHERE quant = 'temp' AND person = 'pb';
+> > SELECT COUNT(reading), AVG(reading) FROM Survey WHERE quant = 'temp' AND person = 'pb';
 > > ~~~
 > > {: .sql}
 > >
-> > |count(reading)|avg(reading)|
+> > |COUNT(reading)|AVG(reading)|
 > > |--------------|------------|
 > > |2             |-20.0       |
 > {: .solution}
@@ -345,7 +345,7 @@ this query:
 >
 > The average of a set of values is the sum of the values
 > divided by the number of values.
-> Does this mean that the `avg` function returns 2.0 or 3.0
+> Does this mean that the `AVG` function returns 2.0 or 3.0
 > when given the values 1.0, `null`, and 5.0?
 >
 > > ## Solution
@@ -372,7 +372,7 @@ this query:
 > We write the query:
 >
 > ~~~
-> SELECT reading - avg(reading) FROM Survey WHERE quant = 'rad';
+> SELECT reading - AVG(reading) FROM Survey WHERE quant = 'rad';
 > ~~~
 > {: .sql}
 >
@@ -381,7 +381,7 @@ this query:
 
 > ## Ordering When Concatenating
 >
-> The function `group_concat(field, separator)`
+> The function `GROUP_CONCAT(field, separator)`
 > concatenates all the values in a field
 > using the specified separator character
 > (or ',' if the separator isn't specified).
