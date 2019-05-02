@@ -129,7 +129,7 @@ SELECT personal || ' ' || family FROM Person;
 >
 > The `UNION ALL` command is similiar to `UNION`. 
 > The difference is that `UNION ALL` will return all rows from all queries, and will not eliminate duplicate rows.  For example:
-
+>
 > ~~~
 > SELECT * FROM Person WHERE id IN ('dyer', 'roe') UNION ALL SELECT * FROM Person WHERE id IN ('dyer', 'roe');
 > ~~~
@@ -141,14 +141,14 @@ SELECT personal || ' ' || family FROM Person;
 > |roe |Valentina|Roerich|
 > |dyer|William  |Dyer   |
 > |roe |Valentina|Roerich|
-
-And if you change the `UNION ALL` to `UNION` you will get the following:
+>
+> And if you change the `UNION ALL` to `UNION` you will get the following:
 >
 > |id  |personal |family |
 > |----|-------- |-------|
 > |dyer|William  |Dyer   |
 > |roe |Valentina|Roerich|
-
+>
 > If you know that all the records to be returned from your union are unique,
 > use `UNION ALL` instead, it gives faster results since it skips the `DISTINCT` step.
 > For this section, we shall use UNION.
