@@ -73,7 +73,7 @@ SELECT * FROM Visited WHERE site = 'DR-1' AND dated < '1930-01-01';
 
 > ## Date Types
 >
-> Most databases have a special data type for dates.
+> Most database systems have a special data type for dates.
 > In fact, many have two:
 > one for dates,
 > such as "May 31, 1971",
