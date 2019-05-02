@@ -37,8 +37,8 @@ When we run the query,
 the expression `1.05 * reading` is evaluated for each row.
 Expressions can use any of the fields,
 all of usual arithmetic operators,
-and a variety of common functions.
-(Exactly which ones depends on which database manager is being used.)
+and a variety of common functions, 
+depending on which database is being used.
 For example,
 we can convert temperature readings from Fahrenheit to Celsius
 and round to two decimal places:
@@ -63,7 +63,7 @@ succinctness and clarity. For example, we could write the previous
 query as:
 
 ~~~
-SELECT taken, round(5 * (reading - 32) / 9, 2) as Celsius FROM Survey WHERE quant = 'temp';
+SELECT taken, round(5 * (reading - 32) / 9, 2) AS Celsius FROM Survey WHERE quant = 'temp';
 ~~~
 {: .sql}
 
@@ -115,7 +115,7 @@ SELECT personal || ' ' || family FROM Person;
 
 > ## Unions
 >
-> The `UNION` operator combines the results of two queries:
+> The `UNION` operator combines the results of two queries, and does a `SELECT DISTINCT` on the results set:
 >
 > ~~~
 > SELECT * FROM Person WHERE id = 'dyer' UNION SELECT * FROM Person WHERE id = 'roe';
@@ -127,13 +127,29 @@ SELECT personal || ' ' || family FROM Person;
 > |dyer|William  |Dyer   |
 > |roe |Valentina|Roerich|
 >
-> The `UNION ALL` command is equivalent to the `UNION` operator,
-> except that `UNION ALL` will select all values.
-> The difference is that `UNION ALL` will not eliminate duplicate rows.
-> Instead, `UNION ALL` pulls all rows from the query
-> specifics and combines them into a table.
-> The `UNION` command does a `SELECT DISTINCT` on the results set.
-> If all the records to be returned are unique from your union,
+> The `UNION ALL` command is similiar to `UNION`. 
+> The difference is that `UNION ALL` will return all rows from all queries, and will not eliminate duplicate rows.  For example:
+
+> ~~~
+> SELECT * FROM Person WHERE id IN ('dyer', 'roe') UNION ALL SELECT * FROM Person WHERE id IN ('dyer', 'roe');
+> ~~~
+> {: .sql}
+>
+> |id  |personal |family |
+> |----|-------- |-------|
+> |dyer|William  |Dyer   |
+> |roe |Valentina|Roerich|
+> |dyer|William  |Dyer   |
+> |roe |Valentina|Roerich|
+
+And if you change the `UNION ALL` to `UNION` you will get the following:
+>
+> |id  |personal |family |
+> |----|-------- |-------|
+> |dyer|William  |Dyer   |
+> |roe |Valentina|Roerich|
+
+> If you know that all the records to be returned from your union are unique,
 > use `UNION ALL` instead, it gives faster results since it skips the `DISTINCT` step.
 > For this section, we shall use UNION.
 >
