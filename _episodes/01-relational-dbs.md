@@ -18,7 +18,7 @@ keypoints:
 
 Lets start with a simple example, say, keeping a record of appointments for a medical clinic.  
 You want to record when and where the appointments were, details about patients, their name, 
-address, phone number, ect., and details about the doctors being seen.
+address, phone number, etc., and details about the doctors being seen.
 
 You could start keeping a table like this: 
 
@@ -62,7 +62,7 @@ to store, easy to assure uniqueness of, and efficient to index and retrieve.  No
 person's name is rarely a reliable unique identifier in a real world application!  
 In our appointments table, patients and doctors are referred to simply through their unique 
 identifier. Such a field is called a 'foreign key', i.e. a key value that belongs to another
-table. Database systems are designed to be able to efficiently make use table relationships
+table. Database systems are designed to be able to efficiently make use of table relationships
 defined through foreign keys, to lookup associated records through multiple tables as required.
   
 This final table design may be represented with an Entity Relationship Diagram:
