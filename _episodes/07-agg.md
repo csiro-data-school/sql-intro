@@ -46,7 +46,7 @@ SELECT MIN(dated) FROM Visited;
 ~~~
 {: .sql}
 
-|MAX(dated)|
+|MIN(dated)|
 |----------|
 |1927-02-08|
 
