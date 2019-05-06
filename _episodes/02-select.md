@@ -186,10 +186,12 @@ we'll return to these missing values [later]({{ site.github.url }}/05-null/).
 > ~~~
 > {: .sql}
 > ~~~
-> CREATE TABLE Person (id text, personal text, family text);
-> CREATE TABLE Site (name text, lat real, long real);
-> CREATE TABLE Survey (taken integer, person text, quant text, reading real);
-> CREATE TABLE Visit (id integer, site text, dated text);
+> CREATE TABLE Person (id TEXT PRIMARY KEY, personal TEXT, family TEXT);
+> CREATE TABLE Site (name TEXT PRIMARY KEY, lat REAL, long REAL);
+> CREATE TABLE Visit (id INTEGER PRIMARY KEY, site TEXT, dated TEXT, 
+> FOREIGN KEY (site) REFERENCES Site(name));
+> CREATE TABLE Survey (taken INTEGER, person TEXT, quant TEXT, reading REAL, 
+> FOREIGN KEY (taken) REFERENCES Visit(id), FOREIGN KEY (person) REFERENCES Person(id));
 > ~~~
 > {: .output}
 >
@@ -348,11 +350,11 @@ SELECT * FROM Person;
 > > ~~~
 > > {: .sql}
 > > ~~~
-> > CREATE TABLE Person (id text PRIMARY KEY, personal text, family text);
-> > CREATE TABLE Site (name text PRIMARY KEY, lat real, long real);
-> > CREATE TABLE Visit (id integer PRIMARY KEY, site text, dated text, 
+> > CREATE TABLE Person (id TEXT PRIMARY KEY, personal TEXT, family TEXT);
+> > CREATE TABLE Site (name TEXT PRIMARY KEY, lat REAL, long REAL);
+> > CREATE TABLE Visit (id INTEGER PRIMARY KEY, site TEXT, dated TEXT, 
 > > FOREIGN KEY (site) REFERENCES Site(name));
-> > CREATE TABLE Survey (taken integer, person text, quant text, reading real, 
+> > CREATE TABLE Survey (taken INTEGER, person TEXT, quant TEXT, reading REAL, 
 > > FOREIGN KEY (taken) REFERENCES Visit(id), FOREIGN KEY (person) REFERENCES Person(id));
 > > ~~~
 > > {: .output}
