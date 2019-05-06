@@ -56,7 +56,8 @@ The data, stored in an SQLite file named 'survey.db', has the following tables a
 > command, type `.help`.
 {: .callout}
 
-Before we get into using SQLite to select the data, let's take a look at the tables of the database we will use in our examples:
+Before we get into using SQLite to select the data, let's take a look at the tables of the 
+database we will use in our examples:
 
 <div class="row">
   <div class="col-md-6" markdown="1">
@@ -79,7 +80,7 @@ Before we get into using SQLite to select the data, let's take a look at the tab
 |DR-3 |-47.15|-126.72|
 |MSK-4|-48.87|-123.4 |
 
-**Visited**: when readings were taken at specific sites.
+**Visit**: when readings were taken at specific sites.
 
 |id   |site |dated     |
 |-----|-----|----------|
@@ -95,7 +96,9 @@ Before we get into using SQLite to select the data, let's take a look at the tab
   </div>
   <div class="col-md-6" markdown="1">
 
-**Survey**: the actual readings.  The field `quant` is short for quantitative and indicates what is being measured.  Values are `rad`, `sal`, and `temp` referring to 'radiation', 'salinity' and 'temperature', respectively.
+**Survey**: the actual readings.  The field `quant` is short for quantitative and indicates what 
+is being measured.  Values are `rad`, `sal`, and `temp` referring to 'radiation', 'salinity' and 
+'temperature', respectively.
 
 |taken|person|quant|reading|
 |-----|------|-----|-------|
@@ -124,7 +127,7 @@ Before we get into using SQLite to select the data, let's take a look at the tab
   </div>
 </div>
 
-Notice that three entries --- one in the `Visited` table,
+Notice that three entries --- one in the `Visit` table,
 and two in the `Survey` table --- don't contain any actual
 data, but instead have a special `-null-` entry:
 we'll return to these missing values [later]({{ site.github.url }}/05-null/).
@@ -172,7 +175,7 @@ we'll return to these missing values [later]({{ site.github.url }}/05-null/).
 > ~~~
 > {: .sql}
 > ~~~
-> Person   Site     Survey   Visited
+> Person   Site     Survey   Visit
 > ~~~
 > {: .output}
 >
@@ -186,7 +189,7 @@ we'll return to these missing values [later]({{ site.github.url }}/05-null/).
 > CREATE TABLE Person (id text, personal text, family text);
 > CREATE TABLE Site (name text, lat real, long real);
 > CREATE TABLE Survey (taken integer, person text, quant text, reading real);
-> CREATE TABLE Visited (id integer, site text, dated text);
+> CREATE TABLE Visit (id integer, site text, dated text);
 > ~~~
 > {: .output}
 >
@@ -345,10 +348,12 @@ SELECT * FROM Person;
 > > ~~~
 > > {: .sql}
 > > ~~~
-> > CREATE TABLE Person (id text, personal text, family text);
-> > CREATE TABLE Site (name text, lat real, long real);
-> > CREATE TABLE Survey (taken integer, person text, quant text, reading real);
-> > CREATE TABLE Visited (id integer, site text, dated text);
+> > CREATE TABLE Person (id text PRIMARY KEY, personal text, family text);
+> > CREATE TABLE Site (name text PRIMARY KEY, lat real, long real);
+> > CREATE TABLE Visit (id integer PRIMARY KEY, site text, dated text, 
+> > FOREIGN KEY (site) REFERENCES Site(name));
+> > CREATE TABLE Survey (taken integer, person text, quant text, reading real, 
+> > FOREIGN KEY (taken) REFERENCES Visit(id), FOREIGN KEY (person) REFERENCES Person(id));
 > > ~~~
 > > {: .output}
 > > From the output, we see that the **taken** column in the **Survey** table (3rd line) is composed of integers. 
