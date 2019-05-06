@@ -235,8 +235,9 @@ not to the entire rows as they are being processed.
 
 > ## Fix This Query
 >
-> Suppose we want to select all sites that lie more than 48 degrees from the poles.
-> Our first query is:
+> Suppose we want to select all sites that lie within 48 degrees of the equator.
+> (The equator has a latitude value of '0', North Pole has a value of '90' and South Pole of '-90')  
+> Our first query attempt is:
 >
 > ~~~
 > SELECT * FROM Site WHERE (lat > -48) OR (lat < 48);
