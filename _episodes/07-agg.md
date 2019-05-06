@@ -377,6 +377,16 @@ this query:
 > {: .sql}
 >
 > What does this actually produce, and why?
+>
+> > ## Solution
+> > Any query with an aggregate function, like the average function AVG(), only ever returns
+> > a single row result. As such, the result returned is just the value of the first row result of
+> > ```
+> > SELECT reading FROM Survey WHERE quant = 'rad';
+> > ```
+> > {: .sql}
+> > with the average of all readings, `AVG(reading)`, subtracted from it.
+> {: .solution}
 {: .challenge}
 
 > ## Ordering When Concatenating
@@ -385,7 +395,18 @@ this query:
 > concatenates all the values in a field
 > using the specified separator character
 > (or ',' if the separator isn't specified).
-> Use this to produce a one-line list of scientists' names,
+>
+> For example:
+> ```
+> SELECT GROUP_CONCAT(name, '...') FROM Site;
+> ```
+> {: .sql}
+> Prints:
+> ~~~
+> DR-1...DR-3...MSK-4
+> ~~~
+> 
+> Use this function to produce a one-line list of scientists' full names,
 > such as:
 >
 > ~~~
@@ -393,5 +414,34 @@ this query:
 > ~~~
 > {: .sql}
 >
-> Can you find a way to order the list by surname?
+> > ## Solution
+> > ```
+> > SELECT GROUP_CONCAT(personal || ' ' || family, ', ') from Person;
+> > ```
+> > {: .sql}
+> {: .solution}
+> 
+> As an extra challenge, can you find a way to order the list by surname?
+> 
+> Hint 1- You will need to get things into an order *before* it enters the GROUP_CONCAT() function.  
+> Hint 2- You can SELECT something from out of the results of *another* (ordered?) SELECT query:
+> ```
+> SELECT ...
+> FROM (
+>   SELECT ...
+> );
+> ```
+> {: .sql}
+>
+> > ## Solution
+> > ```
+> > SELECT GROUP_CONCAT( fullname, ', ') 
+> > FROM (
+> >   SELECT personal || ' ' || family AS fullname
+> >   FROM Person
+> >   ORDER BY family
+> > );
+> > ```
+> > {: .sql}
+> {: .solution}
 {: .challenge}
