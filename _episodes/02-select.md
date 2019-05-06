@@ -29,7 +29,8 @@ We have scanned and OCR the data they contain,
 and we now want to store that information
 in a way that will make search and analysis easy.
   
-The data, stored in an SQLite file named 'survey.db', has the following tables and relationships:
+The data, stored in an SQLite file named [survey.db]({{ page.root }}/files/survey.db), 
+has the following tables and relationships:
   
 ![Appointments tables v5](../fig/sql-surveysTables.jpg)
   
@@ -137,11 +138,10 @@ we'll return to these missing values [later]({{ site.github.url }}/05-null/).
 >
 > On the shell command line,
 > change the working directory to the one where you saved `survey.db`.
-> If you saved it at your Desktop you should use
 >
 > ~~~
-> $ cd Desktop
-> $ ls | grep survey.db
+> $ cd sql-tutorial
+> $ ls survey.db
 > ~~~
 > {: .bash}
 > ~~~
@@ -149,7 +149,7 @@ we'll return to these missing values [later]({{ site.github.url }}/05-null/).
 > ~~~
 > {: .output}
 >
-> If you get the same output, you can run
+> If you get the same output, you're in place to run
 >
 > ~~~
 > $ sqlite3 survey.db
