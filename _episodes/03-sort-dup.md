@@ -222,12 +222,12 @@ SELECT DISTINCT quant, person FROM Survey ORDER BY quant ASC;
 
 > ## Finding Distinct Dates
 >
-> Write a query that selects distinct dates from the `Visited` table.
+> Write a query that selects distinct dates from the `Visit` table.
 >
 > > ## Solution
 > > 
 > > ~~~
-> > SELECT DISTINCT dated FROM Visited;
+> > SELECT DISTINCT dated FROM Visit;
 > > ~~~
 > > {: .sql}
 > >

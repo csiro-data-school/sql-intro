@@ -38,7 +38,7 @@ the triple `(taken, person, quant)` from the `Survey` table uniquely identifies 
 
 The third rule is that there should be no redundant information.
 For example,
-we could get rid of the `Site` table and rewrite the `Visited` table like this:
+we could get rid of the `Site` table and rewrite the `Visit` table like this:
 
 |id   |lat   |long   |dated      |
 |-----|------|-------|-----------|

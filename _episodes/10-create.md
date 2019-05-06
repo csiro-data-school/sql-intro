@@ -28,13 +28,13 @@ they are actually single commands.
 The first one creates a new table;
 its arguments are the names and types of the table's columns.
 For example,
-the following statements create the four tables in our survey database:
+the following statements could create a basic form of the four tables in our survey database:
 
 ~~~
-CREATE TABLE Person(id text, personal text, family text);
-CREATE TABLE Site(name text, lat real, long real);
-CREATE TABLE Visited(id integer, site text, dated text);
-CREATE TABLE Survey(taken integer, person text, quant text, reading real);
+CREATE TABLE Person(id TEXT, personal TEXT, family TEXT);
+CREATE TABLE Site(name TEXT, lat REAL, long REAL);
+CREATE TABLE Visit(id INTEGER, site TEXT, dated TEXT);
+CREATE TABLE Survey(taken INTEGER, person TEXT, quant TEXT, reading REAL);
 ~~~
 {: .sql}
 
@@ -71,31 +71,36 @@ is an unending portability headache.
 When we create a table,
 we can specify several kinds of constraints on its columns.
 For example,
-a better definition for the `Survey` table would be:
+a better definition for the `Survey` table might be:
 
 ~~~
 CREATE TABLE Survey(
-    taken   integer not null, -- where reading taken
-    person  text,             -- may not know who took it
-    quant   text not null,    -- the quantity measured
-    reading real not null,    -- the actual reading
-    primary key(taken, quant),
-    foreign key(taken) references Visited(id),
-    foreign key(person) references Person(id)
+    taken   INTEGER PRIMARY KEY, -- where reading taken
+    person  TEXT,                -- may not know who took it
+    quant   TEXT NOT NULL,       -- the quantity measured
+    reading REAL NOT NULL,      -- the actual reading
+    PRIMARY KEY(taken, quant),
+    FOREIGN KEY(taken) REFERENCES Visit(id),
+    FOREIGN KEY(person) REFERENCES Person(id)
 );
 ~~~
 {: .sql}
 
-Once again,
-exactly what constraints are available
-and what they're called
-depends on which database manager we are using.
+Here we have specified the 'taken' column as a primary key (which automatically gives it the 
+contraints of being both unique and not null), we have given the 'quant' and 'reading'
+columns a constraint of 'not null', meaning they will not allow null during data inserts,
+and we've defined the foreign key relationships on the 'taken' and 'person' columns, 
+to their respective referenced tables and columns.
+
+Exactly what constraints are available,
+what they're called, and what syntax they use,
+may depend on which database manager we are using.
 
 Once tables have been created,
 we can add, change, and remove records using our other set of commands,
 `INSERT`, `UPDATE`, and `DELETE`.
 
-The simplest form of `INSERT` statement lists values in order:
+The simplest form of `INSERT` statement lists values in order (matching column order in table schema):
 
 ~~~
 INSERT INTO Site VALUES('DR-1', -49.85, -128.57);
@@ -104,10 +109,18 @@ INSERT INTO Site VALUES('MSK-4', -48.87, -123.40);
 ~~~
 {: .sql}
 
+Or you can explicitly specify a list of columns to match a list of values:
+
+~~~
+INSERT INTO Person(family, personal, id) VALUES('Smith', 'John', 'js05');
+~~~
+{: .sql}
+
+
 We can also insert values into one table directly from another:
 
 ~~~
-CREATE TABLE JustLatLong(lat text, long text);
+CREATE TABLE JustLatLong(lat TEXT, long TEXT);
 INSERT INTO JustLatLong SELECT lat, long FROM Site;
 ~~~
 {: .sql}

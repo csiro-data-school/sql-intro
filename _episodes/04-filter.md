@@ -19,11 +19,11 @@ i.e.,
 to select only those records that match certain criteria.
 For example,
 suppose we want to see when a particular site was visited.
-We can select these records from the `Visited` table
+We can select these records from the `Visit` table
 by using a `WHERE` clause in our query:
 
 ~~~
-SELECT * FROM Visited WHERE site = 'DR-1';
+SELECT * FROM Visit WHERE site = 'DR-1';
 ~~~
 {: .sql}
 
@@ -35,7 +35,7 @@ SELECT * FROM Visited WHERE site = 'DR-1';
 
 The database manager executes this query in two stages.
 First,
-it checks at each row in the `Visited` table
+it checks at each row in the `Visit` table
 to see which ones satisfy the `WHERE`.
 It then uses the column names following the `SELECT` keyword
 to determine which columns to display.
@@ -45,7 +45,7 @@ we can filter records using `WHERE`
 based on values in columns that aren't then displayed:
 
 ~~~
-SELECT id FROM Visited WHERE site = 'DR-1';
+SELECT id FROM Visit WHERE site = 'DR-1';
 ~~~
 {: .sql}
 
@@ -62,7 +62,7 @@ For example,
 we can ask for all information from the DR-1 site collected before 1930:
 
 ~~~
-SELECT * FROM Visited WHERE site = 'DR-1' AND dated < '1930-01-01';
+SELECT * FROM Visit WHERE site = 'DR-1' AND dated < '1930-01-01';
 ~~~
 {: .sql}
 
@@ -175,7 +175,7 @@ use the `LIKE` keyword.  The percent symbol acts as a
 place.  It can be used at the beginning, middle, or end of the string:
 
 ~~~
-SELECT * FROM Visited WHERE site LIKE 'DR%';
+SELECT * FROM Visit WHERE site LIKE 'DR%';
 ~~~
 {: .sql}
 
