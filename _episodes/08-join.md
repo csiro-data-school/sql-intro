@@ -25,7 +25,7 @@ we might need to format it as
 latitude, longitude, date, quantity, and reading.
 However,
 our latitudes and longitudes are in the `Site` table,
-while the dates of measurements are in the `Visited` table
+while the dates of measurements are in the `Visit` table
 and the readings themselves are in the `Survey` table.
 We need to combine these tables somehow.
 
@@ -35,10 +35,10 @@ This figure shows the relations between the tables:
 
 The SQL command to do this is `JOIN`.
 To see how it works,
-let's start by joining the `Site` and `Visited` tables:
+let's start by joining the `Site` and `Visit` tables:
 
 ~~~
-SELECT * FROM Site JOIN Visited;
+SELECT * FROM Site JOIN Visit;
 ~~~
 {: .sql}
 
@@ -76,7 +76,7 @@ i.e.,
 it joins each record of one table with each record of the other table
 to give all possible combinations.
 Since there are three records in `Site`
-and eight in `Visited`,
+and eight in `Visit`,
 the join's output has 24 records (3 * 8 = 24) .
 And since each table has three fields,
 the output has six fields (3 + 3 = 6).
@@ -90,7 +90,7 @@ we're only interested in combinations that have the same site name,
 thus we need to use a filter:
 
 ~~~
-SELECT * FROM Site JOIN Visited ON Site.name = Visited.site;
+SELECT * FROM Site JOIN Visit ON Site.name = Visit.site;
 ~~~
 {: .sql}
 
@@ -120,7 +120,7 @@ in the output of the join.
 We do this because tables can have fields with the same name,
 and we need to be specific which ones we're talking about.
 For example,
-if we joined the `Person` and `Visited` tables,
+if we joined the `Person` and `Visit` tables,
 the result would inherit a field called `id`
 from each of the original tables.
 
@@ -129,9 +129,9 @@ to select the three columns we actually want
 out of our join:
 
 ~~~
-SELECT Site.lat, Site.long, Visited.dated
+SELECT Site.lat, Site.long, Visit.dated
 FROM   Site 
- JOIN  Visited ON Site.name = Visited.site;
+ JOIN  Visit ON Site.name = Visit.site;
 ~~~
 {: .sql}
 
@@ -155,11 +155,11 @@ and more `ON` tests to filter out combinations of records
 that don't make sense:
 
 ~~~
-SELECT Site.lat, Site.long, Visited.dated, Survey.quant, Survey.reading
+SELECT Site.lat, Site.long, Visit.dated, Survey.quant, Survey.reading
 FROM   Site 
- JOIN  Visited ON Site.name = Visited.site
- JOIN  Survey  ON Visited.id = Survey.taken
-WHERE  Visited.dated IS NOT NULL;
+ JOIN  Visit ON Site.name = Visit.site
+ JOIN  Survey  ON Visit.id = Survey.taken
+WHERE  Visit.dated IS NOT NULL;
 ~~~
 {: .sql}
 
@@ -183,7 +183,7 @@ WHERE  Visited.dated IS NOT NULL;
 |-48.87|-123.4 |1932-01-14|sal  |22.5   |
 |-49.85|-128.57|1932-03-22|rad  |11.25  |
 
-We can tell which records from `Site`, `Visited`, and `Survey`
+We can tell which records from `Site`, `Visit`, and `Survey`
 correspond with each other
 because those tables contain
 [primary keys]({{ site.github.url }}/reference.html#primary-key)
@@ -239,8 +239,8 @@ SELECT rowid, * FROM Person;
  > > ~~~
  > > SELECT Survey.reading 
  > > FROM Site 
- > >   JOIN Visited  ON Site.name = Visited.site
- > >   JOIN Survey   ON Visited.id = Survey.taken
+ > >   JOIN Visit  ON Site.name = Visit.site
+ > >   JOIN Survey   ON Visit.id = Survey.taken
  > > WHERE Site.name = 'DR-1' 
  > > AND Survey.quant = 'rad';
  > > ~~~
@@ -262,8 +262,8 @@ SELECT rowid, * FROM Person;
  > > ~~~
  > > SELECT DISTINCT Site.name
  > > FROM   Site 
- > >  JOIN  Visited ON Site.name = Visited.site
- > >  JOIN  Survey ON Visited.id = Survey.taken
+ > >  JOIN  Visit ON Site.name = Visit.site
+ > >  JOIN  Survey ON Visit.id = Survey.taken
  > >  JOIN  Person ON Survey.person = Person.id
  > > WHERE  Person.personal = 'Frank';
  > > ~~~
@@ -282,8 +282,8 @@ SELECT rowid, * FROM Person;
 > ~~~
 > SELECT Site.name 
 > FROM   Site 
->  JOIN  Visited  ON Site.name = Visited.site
-> WHERE  Site.lat <- 49.0 AND Visited.dated >= '1932-01-01';
+>  JOIN  Visit  ON Site.name = Visit.site
+> WHERE  Site.lat <- 49.0 AND Visit.dated >= '1932-01-01';
 > ~~~
 > {: .sql}
 {: .challenge}
@@ -297,14 +297,14 @@ SELECT rowid, * FROM Person;
  > > ## Solution
  > > 
  > > ~~~
- > > SELECT Site.name, Site.lat, Site.long, Person.personal, Person.family, Survey.quant, Survey.reading, Visited.dated
+ > > SELECT Site.name, Site.lat, Site.long, Person.personal, Person.family, Survey.quant, Survey.reading, Visit.dated
  > > FROM   Site 
- > >  JOIN  Visited ON Site.name = Visited.site
- > >  JOIN  Survey  ON Visited.id = Survey.taken
+ > >  JOIN  Visit ON Site.name = Visit.site
+ > >  JOIN  Survey  ON Visit.id = Survey.taken
  > >  JOIN  Person  ON Survey.person = Person.id
  > > WHERE  Survey.person IS NOT NULL
- > > AND    Visited.dated IS NOT NULL
- > > ORDER BY Visited.dated;
+ > > AND    Visit.dated IS NOT NULL
+ > > ORDER BY Visit.dated;
  > > ~~~
  > > {: .sql}
  > >
@@ -330,14 +330,14 @@ SELECT rowid, * FROM Person;
  > > and while this syntax will work for SQLite, it may not work with other database managers, 
  > > and it is not as easy to read and understand what is happening: 
  > > ~~~
- > > SELECT Site.name, Site.lat, Site.long, Person.personal, Person.family, Survey.quant, Survey.reading, Visited.dated
- > > FROM Site JOIN Visited JOIN Survey JOIN Person
- > > ON Site.name = Visited.site
- > > AND Visited.id = Survey.taken
+ > > SELECT Site.name, Site.lat, Site.long, Person.personal, Person.family, Survey.quant, Survey.reading, Visit.dated
+ > > FROM Site JOIN Visit JOIN Survey JOIN Person
+ > > ON Site.name = Visit.site
+ > > AND Visit.id = Survey.taken
  > > AND Survey.person = Person.id
  > > WHERE Survey.person IS NOT NULL
- > > AND Visited.dated IS NOT NULL
- > > ORDER BY Visited.dated;
+ > > AND Visit.dated IS NOT NULL
+ > > ORDER BY Visit.dated;
  > > ~~~
  > > {: .sql}
   >{: .solution}

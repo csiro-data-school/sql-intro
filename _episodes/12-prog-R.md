@@ -203,7 +203,7 @@ dbListTables(connection)
 ~~~
 {: .r}
 ~~~
-"Person"  "Site"    "Survey"  "Visited"
+"Person"  "Site"    "Survey"  "Visit"
 ~~~
 {: .output}
 

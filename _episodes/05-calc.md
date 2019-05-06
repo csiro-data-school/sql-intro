@@ -188,11 +188,11 @@ SELECT personal || ' ' || family FROM Person;
 
 > ## Selecting Major Site Identifiers
 >
-> The site identifiers in the `Visited` table have two parts
+> The site identifiers in the `Visit` table have two parts
 > separated by a '-':
 >
 > ~~~
-> SELECT DISTINCT site FROM Visited;
+> SELECT DISTINCT site FROM Visit;
 > ~~~
 > {: .sql}
 >
@@ -209,7 +209,7 @@ SELECT personal || ' ' || family FROM Person;
 > returns the position of the first occurrence of string Y in string X, using a 1-based index,
 > or 0 if Y does not exist in X.  For example, the following will show the position of the '-' character in site:
 > ~~~
-> SELECT site, instr(site, '-') FROM Visited;
+> SELECT site, instr(site, '-') FROM Visit;
 > ~~~
 > {: .sql}
 > 
@@ -221,7 +221,7 @@ SELECT personal || ' ' || family FROM Person;
 >
 > > ## Solution
 > > ```
-> > SELECT DISTINCT substr(site, 1, instr(site, '-') - 1) AS MajorSite FROM Visited;
+> > SELECT DISTINCT substr(site, 1, instr(site, '-') - 1) AS MajorSite FROM Visit;
 > > ```
 > > {: .sql}
 > {: .solution}

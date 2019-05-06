@@ -17,10 +17,10 @@ keypoints:
 - "If no aggregation function is specified for a field, the query may return an arbitrary value for that field."
 ---
 We now want to calculate ranges and averages for our data.
-We know how to select all of the dates from the `Visited` table:
+We know how to select all of the dates from the `Visit` table:
 
 ~~~
-SELECT dated FROM Visited;
+SELECT dated FROM Visit;
 ~~~
 {: .sql}
 
@@ -42,7 +42,7 @@ Each of these functions takes a set of records as input,
 and produces a single record as output:
 
 ~~~
-SELECT MIN(dated) FROM Visited;
+SELECT MIN(dated) FROM Visit;
 ~~~
 {: .sql}
 
@@ -53,7 +53,7 @@ SELECT MIN(dated) FROM Visited;
 ![SQL Aggregation](../fig/sql-aggregation.svg)
 
 ~~~
-SELECT MAX(dated) FROM Visited;
+SELECT MAX(dated) FROM Visit;
 ~~~
 {: .sql}
 
@@ -165,7 +165,7 @@ and only combine those that are non-null.
 This behavior lets us write our queries as:
 
 ~~~
-SELECT MIN(dated) FROM Visited;
+SELECT MIN(dated) FROM Visit;
 ~~~
 {: .sql}
 
@@ -176,7 +176,7 @@ SELECT MIN(dated) FROM Visited;
 instead of always having to filter explicitly:
 
 ~~~
-SELECT MIN(dated) FROM Visited WHERE dated IS NOT NULL;
+SELECT MIN(dated) FROM Visit WHERE dated IS NOT NULL;
 ~~~
 {: .sql}
 

@@ -22,13 +22,13 @@ Dealing with `null` requires a few special tricks
 and some careful thinking.
 
 To start,
-let's have a look at the `Visited` table.
+let's have a look at the `Visit` table.
 There are eight records,
 but #752 doesn't have a date --- or rather,
 its date is null:
 
 ~~~
-SELECT * FROM Visited;
+SELECT * FROM Visit;
 ~~~
 {: .sql}
 
@@ -47,7 +47,7 @@ Null doesn't behave like other values.
 If we select the records that come before 1930:
 
 ~~~
-SELECT * FROM Visited WHERE dated < '1930-01-01';
+SELECT * FROM Visit WHERE dated < '1930-01-01';
 ~~~
 {: .sql}
 
@@ -60,7 +60,7 @@ we get two results,
 and if we select the ones that come during or after 1930:
 
 ~~~
-SELECT * FROM Visited WHERE dated >= '1930-01-01';
+SELECT * FROM Visit WHERE dated >= '1930-01-01';
 ~~~
 {: .sql}
 
@@ -98,14 +98,14 @@ In particular,
 comparing things to null with = and != produces null:
 
 ~~~
-SELECT * FROM Visited WHERE dated = NULL;
+SELECT * FROM Visit WHERE dated = NULL;
 ~~~
 {: .sql}
 
 produces no output, and neither does:
 
 ~~~
-SELECT * FROM Visited WHERE dated != NULL;
+SELECT * FROM Visit WHERE dated != NULL;
 ~~~
 {: .sql}
 
@@ -113,7 +113,7 @@ To check whether a value is `null` or not,
 we must use a special test `IS NULL`:
 
 ~~~
-SELECT * FROM Visited WHERE dated IS NULL;
+SELECT * FROM Visit WHERE dated IS NULL;
 ~~~
 {: .sql}
 
@@ -124,7 +124,7 @@ SELECT * FROM Visited WHERE dated IS NULL;
 or its inverse `IS NOT NULL`:
 
 ~~~
-SELECT * FROM Visited WHERE dated IS NOT NULL;
+SELECT * FROM Visit WHERE dated IS NOT NULL;
 ~~~
 {: .sql}
 
@@ -192,14 +192,14 @@ detail in [the next section]({{ site.github.url }}/06-agg/).
 
 > ## Sorting by Known Date
 >
-> Write a query that sorts the records in `Visited` by date,
+> Write a query that sorts the records in `Visit` by date,
 > omitting entries for which the date is not known
 > (i.e., is null).
 >
 > > ## Solution
 > >
 > > ~~~
-> > SELECT * FROM Visited WHERE dated IS NOT NULL ORDER BY dated ASC;
+> > SELECT * FROM Visit WHERE dated IS NOT NULL ORDER BY dated ASC;
 > > ~~~
 > > {: .sql}
 > >
@@ -220,7 +220,7 @@ detail in [the next section]({{ site.github.url }}/06-agg/).
 > What do you expect the query:
 >
 > ~~~
-> SELECT * FROM Visited WHERE dated IN ('1927-02-08', NULL);
+> SELECT * FROM Visit WHERE dated IN ('1927-02-08', NULL);
 > ~~~
 > {: .sql}
 >
