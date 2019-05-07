@@ -206,18 +206,26 @@ SELECT personal || ' ' || family FROM Person;
 > If we wanted to identify only the unique sites (ie, the unique letter codes), how could we achieve this?
 > 
 > The "in string" function `instr(X, Y)`
-> returns the position of the first occurrence of string Y in string X, using a 1-based index,
-> or 0 if Y does not exist in X.  For example, the following will show the position of the '-' character in site:
+> returns the position of the first occurrence of string 'Y' in string 'X', using a 1-based index 
+> (counts starting from 1, unlike most computer languages).
+> If 'Y' does not exist in 'X', 'instr()' returns 0.  
+> For example, the following will show the position of the '-' character in site:
 > ~~~
 > SELECT site, instr(site, '-') FROM Visit;
 > ~~~
 > {: .sql}
 > 
 > The substring function `substr(X, I, [L])`
-> returns the substring of X starting at index I, with an optional length L.
+> returns the substring of 'X' starting at index 'I', with an optional length 'L'.
+> Again, 'substr()' counts index position 'I', starting from 1.
+> For example, the following will show the first 2 characters of each site:
+> ~~~
+> SELECT site, substr(site, 1, 2) FROM Visit;
+> ~~~
+> {: .sql}
 >
-> Use these two functions to produce a list of unique major site identifiers.
-> (For this data, the list should contain only "DR" and "MSK").
+> Use these two functions together to produce a list of unique major site identifiers.
+> (For this data, the result list should contain only "DR" and "MSK").
 >
 > > ## Solution
 > > ```
