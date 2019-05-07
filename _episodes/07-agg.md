@@ -381,11 +381,28 @@ this query:
 > > ## Solution
 > > Any query with an aggregate function, like the average function AVG(), only ever returns
 > > a single row result. As such, the result returned is just the value of the first row result of
-> > ```
+> > ~~~
 > > SELECT reading FROM Survey WHERE quant = 'rad';
-> > ```
+> > ~~~
 > > {: .sql}
 > > with the average of all readings, `AVG(reading)`, subtracted from it.
+> > 
+> > A `GROUP BY` clause won't solve this problem either; you'll still have one `reading` value 
+> > per one `AVG(reading)` value.
+> > 
+> > Advanced- One possible solution would be to nest a sub-query:
+> > ~~~
+> > SELECT reading - (
+> >     SELECT AVG(reading)
+> >     FROM Survey
+> >     WHERE quant = 'rad'
+> > ) AS calc
+> > FROM Survey 
+> > WHERE quant = 'rad';
+> > ~~~
+> > {: .sql}
+> > In this solution, the nested SELECT query calculates an overall average value, while the outer SELECT
+> > makes use of that calculated value and applies it as a subtraction to every individual reading value.
 > {: .solution}
 {: .challenge}
 
